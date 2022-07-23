@@ -10,7 +10,7 @@ type LoginInterface interface {
 	FindHashedUserCredentials(email string) (hashedCredential models.UserCredential, err error)
 }
 
-func (p *Repo) CreateHashedUserCredential(credential models.LoginCredential) error {
+func (d *Dao) CreateHashedUserCredential(credential models.LoginCredential) error {
 
 	var hashedCredential models.UserCredential
 	bytes, err := bcrypt.GenerateFromPassword([]byte(credential.Password), bcrypt.DefaultCost)
@@ -19,15 +19,15 @@ func (p *Repo) CreateHashedUserCredential(credential models.LoginCredential) err
 	}
 	hashedCredential.HashedPassword = string(bytes)
 	hashedCredential.Email = credential.Email
-	if err = p.DB.Create(&hashedCredential).Error; err != nil {
+	if err = d.DB.Create(&hashedCredential).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *Repo) FindHashedUserCredentials(email string) (hashedCredential models.UserCredential, err error) {
+func (d *Dao) FindHashedUserCredentials(email string) (hashedCredential models.UserCredential, err error) {
 
-	if err = p.DB.First(&hashedCredential, "email = ?", email).Error; err != nil {
+	if err = d.DB.First(&hashedCredential, "email = ?", email).Error; err != nil {
 		return hashedCredential, err
 	}
 	return hashedCredential, nil

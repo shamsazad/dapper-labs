@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func Login(repo dao.Repo) func(w http.ResponseWriter, r *http.Request) {
+func Login(repo dao.DaoInterface) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var loginCredential models.LoginCredential
 

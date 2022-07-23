@@ -14,7 +14,7 @@ type AuthenticationToken struct {
 	Token string `json:"token"`
 }
 
-func SignUp(repo dao.Repo) func(w http.ResponseWriter, r *http.Request) {
+func SignUp(repo dao.DaoInterface) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
 		var apiUser models.ApiCreateUser
@@ -59,7 +59,7 @@ func SignUp(repo dao.Repo) func(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func UpdateUser(repo dao.Repo) func(w http.ResponseWriter, r *http.Request) {
+func UpdateUser(DAO dao.DaoInterface) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
 		var apiUpdateUser models.ApiUpdateUser
@@ -75,7 +75,7 @@ func UpdateUser(repo dao.Repo) func(w http.ResponseWriter, r *http.Request) {
 		email := r.Context().Value("email")
 		emailString := fmt.Sprintf("%v", email)
 
-		if err = service.UpdateUser(repo, apiUpdateUser, emailString); err != nil {
+		if err = service.UpdateUser(DAO, apiUpdateUser, emailString); err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			errorMsg := InitializeError(err.Error())
 			w.Write(errorMsg)
@@ -86,7 +86,7 @@ func UpdateUser(repo dao.Repo) func(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func GetAllUsers(repo dao.Repo) func(w http.ResponseWriter, r *http.Request) {
+func GetAllUsers(repo dao.DaoInterface) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
 		var apiUsers models.ApiUsers

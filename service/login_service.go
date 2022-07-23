@@ -6,9 +6,9 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func Login(repo dao.Repo, loginCredential models.LoginCredential) error {
+func Login(DAO dao.LoginInterface, loginCredential models.LoginCredential) error {
 
-	hashedCredential, err := repo.FindHashedUserCredentials(loginCredential.Email)
+	hashedCredential, err := DAO.FindHashedUserCredentials(loginCredential.Email)
 	if err != nil {
 		return err
 	}

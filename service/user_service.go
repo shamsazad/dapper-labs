@@ -13,14 +13,14 @@ import (
 )
 
 //Signup need to run in transaction
-func UserSignUp(repo dao.Repo, apiUser models.ApiCreateUser) error {
+func UserSignUp(DAO dao.DaoInterface, apiUser models.ApiCreateUser) error {
 
 	errs := validateUser(apiUser)
 	if errs != "" {
 		return errors.New(errs)
 	}
 
-	if err := repo.CreateUser(apiUser); err != nil {
+	if err := DAO.CreateUser(apiUser); err != nil {
 		return err
 	}
 
@@ -29,7 +29,7 @@ func UserSignUp(repo dao.Repo, apiUser models.ApiCreateUser) error {
 		Password: apiUser.Password,
 	}
 
-	err := repo.CreateHashedUserCredential(userLoginCredential)
+	err := DAO.CreateHashedUserCredential(userLoginCredential)
 	if err != nil {
 		return err
 	}
@@ -37,16 +37,16 @@ func UserSignUp(repo dao.Repo, apiUser models.ApiCreateUser) error {
 	return nil
 }
 
-func UpdateUser(repo dao.Repo, apiUpdateUser models.ApiUpdateUser, email string) error {
-	if err := repo.UpdateUser(apiUpdateUser, email); err != nil {
+func UpdateUser(DAO dao.UserInterface, apiUpdateUser models.ApiUpdateUser, email string) error {
+	if err := DAO.UpdateUser(apiUpdateUser, email); err != nil {
 		return err
 	}
 	return nil
 }
 
-func GetAllUsers(repo dao.Repo) (apiUsers models.ApiUsers, err error) {
+func GetAllUsers(DAO dao.UserInterface) (apiUsers models.ApiUsers, err error) {
 
-	if apiUsers, err = repo.GetAllUsers(); err != nil {
+	if apiUsers, err = DAO.GetAllUsers(); err != nil {
 		return apiUsers, err
 	}
 	return apiUsers, nil
