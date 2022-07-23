@@ -14,7 +14,7 @@ type AuthenticationToken struct {
 	Token string `json:"token"`
 }
 
-func SignUp(repo dao.DaoInterface) func(w http.ResponseWriter, r *http.Request) {
+func SignUp(DAO dao.DaoInterface) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
 		var apiUser models.ApiCreateUser
@@ -27,7 +27,7 @@ func SignUp(repo dao.DaoInterface) func(w http.ResponseWriter, r *http.Request) 
 			return
 		}
 
-		err = service.UserSignUp(repo, apiUser)
+		err = service.UserSignUp(DAO, apiUser)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			errorMsg := InitializeError(err.Error())
@@ -86,13 +86,13 @@ func UpdateUser(DAO dao.DaoInterface) func(w http.ResponseWriter, r *http.Reques
 	}
 }
 
-func GetAllUsers(repo dao.DaoInterface) func(w http.ResponseWriter, r *http.Request) {
+func GetAllUsers(DAO dao.DaoInterface) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
 		var apiUsers models.ApiUsers
 		w.Header().Set("Content-Type", "application/json")
 
-		apiUsers, err := service.GetAllUsers(repo)
+		apiUsers, err := service.GetAllUsers(DAO)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			errorMsg := InitializeError(err.Error())
