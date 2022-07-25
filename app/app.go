@@ -79,7 +79,7 @@ func (a *App) HandleRequests() {
 	authenticatedRouter.Use(middleware.AuthMiddleware())
 	authenticatedRouter.HandleFunc("/dapper-lab/update/user", handlers.UpdateUser(app.DAO)).Methods(http.MethodPost)
 	authenticatedRouter.HandleFunc("/dapper-lab/users", handlers.GetAllUsers(app.DAO)).Methods(http.MethodGet)
-	app.Router.HandleFunc("/dapper-lab/user", handlers.SignUp(app.DAO)).Methods(http.MethodPost)
+	app.Router.HandleFunc("/dapper-lab/signup", handlers.SignUp(app.DAO)).Methods(http.MethodPost)
 	app.Router.HandleFunc("/dapper-lab/login", handlers.Login(app.DAO)).Methods(http.MethodPost)
 	log.Fatal(http.ListenAndServe(":10000", app.Router))
 }
