@@ -12,14 +12,13 @@ import (
 	"strings"
 )
 
-//Signup need to run in transaction
+//TODO: Signup need to run in transaction
 func UserSignUp(DAO dao.DaoInterface, apiUser models.ApiCreateUser) error {
 
 	errs := validateUser(apiUser)
 	if errs != "" {
 		return errors.New(errs)
 	}
-
 	if err := DAO.CreateUser(apiUser); err != nil {
 		return err
 	}

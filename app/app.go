@@ -52,19 +52,13 @@ func createDbConnection() *gorm.DB {
 
 func createDSN() string {
 
-	//err := godotenv.Load()
-	//if err != nil {
-	//	log.Fatalf("Error loading .env file %v", err)
-	//}
-
-	host := getEnv("DB_HOST", "localhost")
-	user := getEnv("DB_USER", "shamsazad")
-	password := getEnv("DB_PASSWORD", "postgres")
-	dbname := getEnv("DB_NAME", "postgres")
+	host := getEnv("DB_HOST", "database")
+	user := getEnv("DB_USER", "test_dapper_user")
+	password := getEnv("DB_PASSWORD", "123")
+	dbname := getEnv("DB_NAME", "dapper_lab")
 	port := getEnv("DB_PORT", "5432")
 
 	return fmt.Sprintf("postgres://%v:%v@%v:%v/%v?sslmode=disable", user, password, host, port, dbname)
-	//return fmt.Sprintf("postgres://test_dapper_user:123@database:5432/dapper_lab?sslmode=disable")
 }
 
 func getEnv(key string, defaultValue string) string {
